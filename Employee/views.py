@@ -9,7 +9,7 @@ from .serializers import DepartmentSerializer, EmployeeSerializer
 
 @csrf_exempt
 def departmentApi(request, id=0):
-    if request.methode == "GET":
+    if request.method == "GET":
         department = Departments.objects.all()
         departments_serializer = DepartmentSerializer(department, many=True)
         return JsonResponse(departments_serializer.data, safe=False)
@@ -34,3 +34,30 @@ def departmentApi(request, id=0):
         department = Departments.objects.get(DepartmentId=id)
         department.delete()
         return JsonResponse("Deleted Successfully")
+
+
+@csrf_exempt
+def employeeApi(request, id=0):
+    if request.method == "GET":
+        employee = Employees.objects.all()
+        employee_seializer = EmployeeSerializer(employee, many=True)
+        return JsonResponse(employee_seializer.data, safe=False)
+    elif request.method == "POST":
+        employee_data = JSONParser().parse(request)
+        employee_seializer = EmployeeSerializer(data=employee_data)
+        if employee_seializer.is_valid():
+            employee_seializer.save()
+            return JsonResponse("Added Successfully!", safe=False)
+        return JsonResponse("Faild Added!", safe=False)
+    elif request.method == "PUT":
+        employee_data = JSONParser().parse(request)
+        employee = Employees.objects.get(EmployeeId=employee_data["EmployeeId"])
+        employee_seializer = EmployeeSerializer(employee, data=employee_data)
+        if employee_seializer.is_valid():
+            employee_seializer.save()
+            return JsonResponse("Update Successfully!", safe=False)
+        return JsonResponse("Faild Update!", safe=False)
+    elif request.method == "DELETE":
+        employee = Employees().objects.get(EmployeeId=id)
+        employee.delete()
+        return JsonResponse("Deleting Sucessfully!", safe=False)
