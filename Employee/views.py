@@ -6,6 +6,8 @@ from django.http.response import JsonResponse
 from .models import Departments, Employees
 from .serializers import DepartmentSerializer, EmployeeSerializer
 
+from django.core.files.storage import default_storage
+
 
 @csrf_exempt
 def departmentApi(request, id=0):
@@ -61,3 +63,10 @@ def employeeApi(request, id=0):
         employee = Employees().objects.get(EmployeeId=id)
         employee.delete()
         return JsonResponse("Deleting Sucessfully!", safe=False)
+
+
+@csrf_exempt
+def SaveFile(requset):
+    file = requset.FILES["file"]
+    file_name = default_storage.save(file.name, file)
+    return JsonResponse(file_name, safe=False)
