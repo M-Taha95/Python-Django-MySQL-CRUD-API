@@ -89,7 +89,7 @@ DATABASES = {
         "NAME": "djangoAPI",
         "HOST": "localhost",
         "USER": "root",
-        "PASSWORD": "2101995Taha",
+        "PASSWORD": "your password",
     }
 }
 
